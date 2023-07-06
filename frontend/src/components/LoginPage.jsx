@@ -41,10 +41,6 @@ const LoginPage = () => {
     validationSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onChange: (e) => {
-      formik.handleChange(e);
-      setAuthFailed(false);
-    },
     onSubmit: async (values, { setSubmitting }) => {
       setAuthFailed(false);
       try {
@@ -81,6 +77,7 @@ const LoginPage = () => {
                     <Form.Control
                       type="text"
                       onChange={(e) => {
+                        setAuthFailed(false);
                         formik.handleChange(e);
                       }}
                       value={formik.values.username}
@@ -105,6 +102,7 @@ const LoginPage = () => {
                     <Form.Control
                       type="password"
                       onChange={(e) => {
+                        setAuthFailed(false);
                         formik.handleChange(e);
                       }}
                       value={formik.values.password}
