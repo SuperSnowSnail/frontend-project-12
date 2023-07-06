@@ -10,8 +10,9 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import useAuth from '../hooks/useAuth';
 
 import loginImg from '../assets/login.jpg';
 
@@ -22,8 +23,12 @@ const validationSchema = yup.object().shape({
 
 // prettier-ignore
 const LoginPage = () => {
-  const usernameInput = useRef(null);
+  const auth = useAuth();
+  const navigate = useNavigate();
 
+  const [authFailed, setAuthFailed] = useState(false);
+
+  const usernameInput = useRef(null);
   useEffect(() => {
     usernameInput.current.focus();
   }, []);
@@ -36,11 +41,24 @@ const LoginPage = () => {
     validationSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values, { setSubmitting }) => {
-      setTimeout(() => {
-        console.log(values);
+    onChange: (e) => {
+      formik.handleChange(e);
+      setAuthFailed(false);
+    },
+    onSubmit: async (values, { setSubmitting }) => {
+      setAuthFailed(false);
+      try {
+        await auth.logIn(values);
+        navigate('/');
+      } catch (err) {
         setSubmitting(false);
-      }, 1000);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          usernameInput.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
 
@@ -71,7 +89,7 @@ const LoginPage = () => {
                       autoComplete="username"
                       required
                       ref={usernameInput}
-                      isInvalid={isUsernameInvalid}
+                      isInvalid={authFailed || isUsernameInvalid}
                     />
                     <Form.Label>Ваш ник</Form.Label>
                     <Form.Control.Feedback
@@ -93,12 +111,12 @@ const LoginPage = () => {
                       onBlur={formik.handleBlur}
                       placeholder="Пароль"
                       autoComplete="password"
-                      isInvalid={isPasswordInvalid}
+                      isInvalid={authFailed || isPasswordInvalid}
                       required
                     />
                     <Form.Label>Пароль</Form.Label>
                     <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip>
-                      {formik.errors.password}
+                      {formik.errors.password || 'Неверные имя пользователя или пароль'}
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Button type="submit" variant="outline-primary" className="w-100 mb-3">
