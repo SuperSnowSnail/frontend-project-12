@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Container, Row } from 'react-bootstrap';
 import axios from 'axios';
 
-import {
-  selectors as channelsSelectors,
-  setCurrentChannelId,
-  addChannels,
-} from '../slices/channelsSlice';
-import { selectors as messagesSelectors, addMessages } from '../slices/messagesSlice';
+import Channels from './Channels';
+import Messages from './Messages';
+
+import { setCurrentChannelId, addChannels } from '../slices/channelsSlice';
+import { addMessages } from '../slices/messagesSlice';
 
 const getAuthHeader = () => {
   const userToken = localStorage.getItem('userToken');
@@ -17,9 +17,6 @@ const getAuthHeader = () => {
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-  const channels = useSelector(channelsSelectors.selectAll);
-  const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -34,14 +31,13 @@ const ChatPage = () => {
   }, [dispatch]);
 
   return (
-    <>
-      {channels && <p>{`channels: ${channels}`}</p>}
-      {messages && <p>{`messages: ${messages}`}</p>}
-      {currentChannelId && <p>{`Current channel ID: ${currentChannelId}`}</p>}
-    </>
+    <Container className="h-100 my-4 overflow-hidden rounded shadow">
+      <Row className="h-100 bg-white flex-md-row">
+        <Channels />
+        <Messages />
+      </Row>
+    </Container>
   );
-
-  // return content && <p>{JSON.stringify(content)}</p>;
 };
 
 export default ChatPage;

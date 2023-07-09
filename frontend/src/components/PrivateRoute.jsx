@@ -6,8 +6,6 @@ import ChatPage from './ChatPage';
 const PrivateRoute = () => {
   const auth = useAuth();
 
-  console.log(auth.loggedIn);
-
   return auth.loggedIn ? <ChatPage /> : <Navigate to="/login" />;
 };
 
