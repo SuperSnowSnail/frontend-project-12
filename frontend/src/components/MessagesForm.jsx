@@ -28,8 +28,6 @@ const MessagesForm = () => {
       body: '',
     },
     validationSchema,
-    validateOnChange: false,
-    validateOnBlur: false,
     onSubmit: ({ body }) => {
       const message = {
         body,
@@ -57,7 +55,12 @@ const MessagesForm = () => {
             required
             ref={messageInput}
           />
-          <Button variant="" type="submit" className="btn-group-vertical">
+          <Button
+            variant=""
+            type="submit"
+            className="btn-group-vertical"
+            disabled={Boolean(formik.errors.body)}
+          >
             <ArrowRightSquare size={20} title="Отправить" />
           </Button>
         </InputGroup>
