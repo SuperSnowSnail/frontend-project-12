@@ -2,7 +2,12 @@ import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { addMessage } from '../slices/messagesSlice';
-import { addChannel, removeChannel, updateChannelName } from '../slices/channelsSlice';
+import {
+  addChannel,
+  removeChannel,
+  updateChannelName,
+  setCurrentChannelId,
+} from '../slices/channelsSlice';
 
 import ChatContext from '../contexts/ChatContext';
 
@@ -14,12 +19,12 @@ const ChatProvider = ({ socket, children }) => {
       socket.connect();
 
       socket.on('newMessage', (message) => {
-        console.log(message);
         dispatch(addMessage(message));
       });
 
       socket.on('newChannel', (channel) => {
         dispatch(addChannel(channel));
+        dispatch(setCurrentChannelId(channel.id));
       });
 
       socket.on('removeChannel', ({ id }) => {

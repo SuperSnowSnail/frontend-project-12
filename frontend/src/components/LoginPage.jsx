@@ -91,7 +91,6 @@ const LoginPage = () => {
                     <Form.Label>Ваш ник</Form.Label>
                     <Form.Control.Feedback
                       type="invalid"
-                      className="invalid-feedback"
                       tooltip={isUsernameInvalid}
                     >
                       {formik.errors.username}
@@ -113,7 +112,7 @@ const LoginPage = () => {
                       required
                     />
                     <Form.Label>Пароль</Form.Label>
-                    <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip>
+                    <Form.Control.Feedback type="invalid" tooltip>
                       {formik.errors.password || 'Неверные имя пользователя или пароль'}
                     </Form.Control.Feedback>
                   </Form.Group>
