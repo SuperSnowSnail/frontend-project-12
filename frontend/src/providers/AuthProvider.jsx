@@ -19,9 +19,17 @@ const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(newUser));
     setUser(newUser);
   };
+
   const logOut = () => {
     localStorage.removeItem('user');
     setUser(null);
+  };
+
+  const signUp = async (userData) => {
+    const res = await axios.post('/api/v1/signup', userData);
+    const newUser = res.data;
+    localStorage.setItem('user', JSON.stringify(newUser));
+    setUser(newUser);
   };
 
   const context = useMemo(
@@ -31,6 +39,7 @@ const AuthProvider = ({ children }) => {
       token,
       logIn,
       logOut,
+      signUp,
     }),
     [loggedIn, username, token],
   );
