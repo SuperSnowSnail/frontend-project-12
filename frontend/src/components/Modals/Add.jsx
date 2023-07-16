@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
 import { close } from '../../slices/modalSlice';
@@ -10,6 +11,8 @@ import { close } from '../../slices/modalSlice';
 import useChat from '../../hooks/useChat';
 
 const Add = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const chat = useChat();
 
@@ -28,10 +31,10 @@ const Add = () => {
     name: yup
       .string()
       .trim()
-      .required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelsNames, 'Должно быть уникальным'),
+      .required(t('modals.required'))
+      .min(3, t('modals.min'))
+      .max(20, t('modals.max'))
+      .notOneOf(channelsNames, t('modals.uniq')),
   });
 
   const formik = useFormik({
@@ -53,7 +56,7 @@ const Add = () => {
   return (
     <Modal show={isOpen} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
       <Form onSubmit={formik.handleSubmit}>
         <Modal.Body>
@@ -63,7 +66,7 @@ const Add = () => {
             value={formik.values.name}
             onBlur={formik.handleBlur}
             name="name"
-            aria-label="Имя канала"
+            aria-label={t('modals.channelName')}
             className="mb-2"
             isInvalid={isNameInvalid}
             required
@@ -75,10 +78,10 @@ const Add = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button variant="primary" type="submit">
-            Отправить
+            {t('modals.submit')}
           </Button>
         </Modal.Footer>
       </Form>

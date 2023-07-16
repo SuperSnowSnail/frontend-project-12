@@ -7,12 +7,14 @@ import {
 } from 'react-bootstrap';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import { setCurrentChannelId } from '../slices/channelsSlice';
 import { open } from '../slices/modalSlice';
 
-// prettier-ignore
 const Removable = ({ id, name }) => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.channels.currentChannelId);
 
@@ -41,21 +43,26 @@ const Removable = ({ id, name }) => {
           dispatch(setCurrentChannelId(id));
         }}
       >
-        <span className="me-1">#</span>
-        {' '}
-        {name}
+        {t('channels.channelName', { name })}
       </Button>
-      <Dropdown.Toggle split variant={id === currentId ? 'secondary' : ''} />
+      <Dropdown.Toggle split variant={id === currentId ? 'secondary' : ''}>
+        <span className="visually-hidden">{t('channels.menu')}</span>
+      </Dropdown.Toggle>
       <Dropdown.Menu>
-        <Dropdown.Item as="button" onClick={handleOpenRemove}>Удалить</Dropdown.Item>
-        <Dropdown.Item as="button" onClick={handleOpenRename}>Переименовать</Dropdown.Item>
+        <Dropdown.Item as="button" onClick={handleOpenRemove}>
+          {t('channels.remove')}
+        </Dropdown.Item>
+        <Dropdown.Item as="button" onClick={handleOpenRename}>
+          {t('channels.rename')}
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
 };
 
-// prettier-ignore
 const NonRemovable = ({ id, name }) => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const currentId = useSelector((state) => state.channels.currentChannelId);
 
@@ -67,9 +74,7 @@ const NonRemovable = ({ id, name }) => {
         dispatch(setCurrentChannelId(id));
       }}
     >
-      <span className="me-1">#</span>
-      {' '}
-      {name}
+      {t('channels.channelName', { name })}
     </Button>
   );
 };

@@ -1,6 +1,9 @@
-import { useEffect } from 'react';
+import { Container, Row, Spinner } from 'react-bootstrap';
+
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Container, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import axios from 'axios';
 
 import Channels from './Channels';
@@ -14,19 +17,25 @@ import useAuth from '../hooks/useAuth';
 import useChat from '../hooks/useChat';
 
 const ChatPage = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
   const auth = useAuth();
   const chat = useChat();
 
+  const [isFetching, setFetching] = useState(true);
+
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        setFetching(true);
         const headers = auth.loggedIn ? { Authorization: `Bearer ${auth.token}` } : {};
         const { data } = await axios.get('api/v1/data', { headers });
 
         dispatch(addChannels(data.channels));
         dispatch(addMessages(data.messages));
         dispatch(setCurrentChannelId(data.currentChannelId));
+        setFetching(false);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           auth.logOut();
@@ -42,7 +51,13 @@ const ChatPage = () => {
     };
   }, [dispatch, chat, auth]);
 
-  return (
+  return isFetching ? (
+    <div className="h-100 d-flex justify-content-center align-items-center">
+      <Spinner animation="border" role="status" variant="primary">
+        <span className="visually-hidden">{t('loading')}</span>
+      </Spinner>
+    </div>
+  ) : (
     <>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">
