@@ -27,11 +27,6 @@ const SignupPage = () => {
 
   const [authFailed, setAuthFailed] = useState(false);
 
-  const usernameInput = useRef(null);
-  useEffect(() => {
-    usernameInput.current.focus();
-  }, []);
-
   const validationSchema = yup.object().shape({
     username: yup
       .string()
@@ -74,7 +69,6 @@ const SignupPage = () => {
 
         if (err.response?.status === 409) {
           setAuthFailed(true);
-          usernameInput.current.select();
           return;
         }
 
@@ -82,6 +76,12 @@ const SignupPage = () => {
       }
     },
   });
+
+  const usernameInput = useRef(null);
+  useEffect(() => {
+    usernameInput.current.focus();
+  }, [formik.isSubmitting]);
+  // With isSubmitting dependency, focus will be on input after sending request
 
   const isUsernameInvalid = formik.errors.username && formik.touched.username;
   const isPasswordInvalid = formik.errors.password && formik.touched.password;

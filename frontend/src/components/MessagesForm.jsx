@@ -18,12 +18,6 @@ const MessagesForm = () => {
 
   const channelId = useSelector((state) => state.channels.currentChannelId);
 
-  const messageInput = useRef(null);
-  useEffect(() => {
-    messageInput.current.focus();
-  }, [channelId]);
-  // With channelId dependency, now focus will be on input on every change of channels
-
   const validationSchema = yup.object().shape({
     body: yup.string().trim().required(t('chat.required')),
   });
@@ -42,7 +36,6 @@ const MessagesForm = () => {
       try {
         await chat.sendMessage(message);
         formik.resetForm();
-        messageInput.current.focus();
       } catch (err) {
         setSubmitting(false);
         console.error(err);
@@ -50,6 +43,13 @@ const MessagesForm = () => {
       }
     },
   });
+
+  const messageInput = useRef(null);
+  useEffect(() => {
+    messageInput.current.focus();
+  }, [channelId, formik.isSubmitting]);
+  // With channelId dependency, now focus will be on input on every change of channels
+  // With isSubmitting dependency, focus will be on input after sending message
 
   return (
     <div className="mt-auto px-5 py-3">

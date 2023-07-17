@@ -23,11 +23,6 @@ const Rename = () => {
   const channelId = useSelector((state) => state.modal.item.id);
   const channelName = useSelector((state) => state.modal.item.name);
 
-  const nameInput = useRef(null);
-  useEffect(() => {
-    nameInput.current.select();
-  }, []);
-
   const handleClose = () => dispatch(close());
 
   const validationSchema = yup.object().shape({
@@ -59,6 +54,12 @@ const Rename = () => {
       }
     },
   });
+
+  const nameInput = useRef(null);
+  useEffect(() => {
+    nameInput.current.select();
+  }, [formik.isSubmitting]);
+  // With isSubmitting dependency, focus will be on input after sending request
 
   const isNameInvalid = formik.errors.name && formik.touched.name;
 

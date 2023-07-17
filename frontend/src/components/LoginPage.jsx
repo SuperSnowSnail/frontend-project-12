@@ -27,11 +27,6 @@ const LoginPage = () => {
 
   const [authFailed, setAuthFailed] = useState(false);
 
-  const usernameInput = useRef(null);
-  useEffect(() => {
-    usernameInput.current.focus();
-  }, []);
-
   const validationSchema = yup.object().shape({
     username: yup.string().trim().required(t('login.required')),
     password: yup.string().trim().required(t('login.required')),
@@ -60,7 +55,6 @@ const LoginPage = () => {
 
         if (err.response?.status === 401) {
           setAuthFailed(true);
-          usernameInput.current.select();
           return;
         }
 
@@ -68,6 +62,12 @@ const LoginPage = () => {
       }
     },
   });
+
+  const usernameInput = useRef(null);
+  useEffect(() => {
+    usernameInput.current.focus();
+  }, [formik.isSubmitting]);
+  // With isSubmitting dependency, focus will be on input after sending request
 
   const isUsernameInvalid = formik.errors.username && formik.touched.username;
   const isPasswordInvalid = formik.errors.password && formik.touched.password;

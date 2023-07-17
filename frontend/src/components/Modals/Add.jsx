@@ -21,11 +21,6 @@ const Add = () => {
   const channels = useSelector(channelsSelectors.selectAll);
   const channelsNames = channels.map(({ name }) => name);
 
-  const nameInput = useRef(null);
-  useEffect(() => {
-    nameInput.current.focus();
-  }, []);
-
   const handleClose = () => dispatch(close());
 
   const validationSchema = yup.object().shape({
@@ -57,6 +52,12 @@ const Add = () => {
       }
     },
   });
+
+  const nameInput = useRef(null);
+  useEffect(() => {
+    nameInput.current.focus();
+  }, [formik.isSubmitting]);
+  // With isSubmitting dependency, focus will be on input after sending request
 
   const isNameInvalid = formik.errors.name && formik.touched.name;
 

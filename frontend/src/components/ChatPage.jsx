@@ -1,4 +1,5 @@
 import { Container, Row, Spinner } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -37,9 +38,17 @@ const ChatPage = () => {
         dispatch(setCurrentChannelId(data.currentChannelId));
         setFetching(false);
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          auth.logOut();
+        if (!err.isAxiosError) {
+          toast.error(t('errors.unknown'));
+          return;
         }
+
+        if (err.response?.status === 401) {
+          auth.logOut();
+          return;
+        }
+
+        toast.error(t('errors.network'));
       }
     };
 
@@ -49,7 +58,7 @@ const ChatPage = () => {
     return () => {
       chat.disconnect();
     };
-  }, [dispatch, chat, auth]);
+  }, [dispatch, chat, auth, t]);
 
   return isFetching ? (
     <div className="h-100 d-flex justify-content-center align-items-center">
