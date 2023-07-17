@@ -8,6 +8,7 @@ import {
   Container,
   Image,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
@@ -51,12 +52,19 @@ const LoginPage = () => {
         navigate('/');
       } catch (err) {
         setSubmitting(false);
-        if (err.isAxiosError && err.response.status === 401) {
+        console.error(err);
+        if (!err.isAxiosError) {
+          toast.error(t('errors.unknown'));
+          return;
+        }
+
+        if (err.response?.status === 401) {
           setAuthFailed(true);
           usernameInput.current.select();
           return;
         }
-        throw err;
+
+        toast.error(t('errors.network'));
       }
     },
   });

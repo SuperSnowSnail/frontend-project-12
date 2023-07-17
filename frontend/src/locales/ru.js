@@ -1,17 +1,17 @@
 export default {
   translation: {
     languages: {
-      ru: 'RU',
-      en: 'EN',
+      ru: 'RU', // done
+      en: 'EN', // done
     },
     channels: {
       menu: 'Управление каналом', // done
       remove: 'Удалить', // done
       rename: 'Переименовать', // done
       channels: 'Каналы', // done
-      created: 'Канал создан',
-      renamed: 'Канал переименован',
-      removed: 'Канал удалён',
+      created: 'Канал создан', // done
+      renamed: 'Канал переименован', // done
+      removed: 'Канал удалён', // done
       plus: '+', // done
       channelName: '# {{name}}', // done 3
     },
@@ -69,8 +69,8 @@ export default {
       linkText: 'на главную страницу', // done
     },
     errors: {
-      network: 'Ошибка соединения',
-      unknown: 'Неизвестная ошибка',
+      network: 'Ошибка соединения', // done 5
+      unknown: 'Неизвестная ошибка', // done 2
     },
   },
 };
