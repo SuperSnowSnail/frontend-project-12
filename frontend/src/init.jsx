@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
+import leoProfanity from 'leo-profanity';
 
 import App from './components/App';
 import resources from './locales/index.js';
@@ -17,6 +18,9 @@ const init = async () => {
     resources,
     fallbackLng: 'ru',
   });
+
+  const profanityRu = leoProfanity.getDictionary('ru');
+  leoProfanity.add(profanityRu);
 
   const socket = io('/', { autoConnect: false });
 

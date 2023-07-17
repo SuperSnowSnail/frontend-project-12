@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 
 import useAuth from '../hooks/useAuth';
 
@@ -33,7 +34,8 @@ const SignupPage = () => {
       .trim()
       .required(t('signup.required'))
       .min(3, t('signup.usernameConstraints'))
-      .max(20, t('signup.usernameConstraints')),
+      .max(20, t('signup.usernameConstraints'))
+      .notOneOf(leoProfanity.list(), t('signup.profanity')),
     password: yup.string().trim().required(t('signup.required')).min(6, t('signup.passMin')),
     confirmPassword: yup
       .string()
@@ -92,11 +94,11 @@ const SignupPage = () => {
       <Row className="justify-content-center align-items-center h-100">
         <Col xs={12} md={8} xxl={6}>
           <Card className="shadow-sm">
-            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-              <div>
+            <Card.Body className="p-5 row">
+              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                 <Image src={signupImg} alt={t('signup.header')} roundedCircle />
-              </div>
-              <Form className="w-50" onSubmit={formik.handleSubmit}>
+              </Col>
+              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('signup.header')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group className="mb-3 form-floating" controlId="username">

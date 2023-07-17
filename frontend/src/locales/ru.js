@@ -32,6 +32,7 @@ export default {
       min: 'От 3 до 20 символов', // done 2
       max: 'От 3 до 20 символов', // done 2
       uniq: 'Должно быть уникальным', // done 2
+      profanity: 'Не должно содержать нецензурной лексики', // done 2
       cancel: 'Отменить', // done 3
       submit: 'Отправить', // done 2
       remove: 'Удалить канал', // done
@@ -57,6 +58,7 @@ export default {
       mustMatch: 'Пароли должны совпадать', // done
       username: 'Имя пользователя', // done 2
       usernameConstraints: 'От 3 до 20 символов', // done 2
+      profanity: 'Имя содержит нецензурную лексику', // done
       password: 'Пароль', // done 2
       confirm: 'Подтвердите пароль', // done 2
       alreadyExists: 'Такой пользователь уже существует', // done
