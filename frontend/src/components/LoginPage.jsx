@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 
 import useAuth from '../hooks/useAuth';
 
@@ -21,6 +22,7 @@ import loginImg from '../assets/login.jpg';
 
 const LoginPage = () => {
   const { t } = useTranslation();
+  const rollbar = useRollbar();
 
   const auth = useAuth();
   const navigate = useNavigate();
@@ -49,6 +51,7 @@ const LoginPage = () => {
         setSubmitting(false);
         console.error(err);
         if (!err.isAxiosError) {
+          rollbar.error('Unknown error while trying to login', err);
           toast.error(t('errors.unknown'));
           return;
         }
@@ -58,6 +61,7 @@ const LoginPage = () => {
           return;
         }
 
+        rollbar.error('Network error while trying to login', err);
         toast.error(t('errors.network'));
       }
     },
