@@ -6,13 +6,12 @@
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/build",
-    "dev": "start-server & npm -C frontend start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd frontend && npm install"
+    "postinstall": "cd frontend && npm ci"
   },
   "author": "SnowSnail",
   "license": "ISC",
   "dependencies": {
-    "@hexlet/chat-server": "1.1.5"
+    "@hexlet/chat-server": "^1.1.6"
   }
 }
