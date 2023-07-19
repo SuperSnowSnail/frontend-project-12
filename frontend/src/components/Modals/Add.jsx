@@ -8,7 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import leoProfanity from 'leo-profanity';
 
-import { selectors as channelsSelectors } from '../../slices/channelsSlice';
+import {
+  selectors as channelsSelectors,
+  setCurrentChannelId,
+  addChannel,
+} from '../../slices/channelsSlice';
 import { close } from '../../slices/modalSlice';
 
 import useChat from '../../hooks/useChat';
@@ -46,7 +50,9 @@ const Add = () => {
     validateOnBlur: false,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        await chat.createChannel(values.name);
+        const channel = await chat.createChannel(values.name);
+        dispatch(addChannel(channel));
+        dispatch(setCurrentChannelId(channel.id));
         toast.success(t('channels.created'));
         handleClose();
       } catch (err) {
