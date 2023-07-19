@@ -14,7 +14,7 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useRollbar } from '@rollbar/react';
+// import { useRollbar } from '@rollbar/react';
 import leoProfanity from 'leo-profanity';
 
 import useAuth from '../hooks/useAuth';
@@ -23,7 +23,7 @@ import signupImg from '../assets/signup.jpg';
 
 const SignupPage = () => {
   const { t } = useTranslation();
-  const rollbar = useRollbar();
+  // const rollbar = useRollbar();
 
   const auth = useAuth();
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const SignupPage = () => {
         setSubmitting(false);
         console.error(err);
         if (!err.isAxiosError) {
-          rollbar.error('Unknown error while trying to signup', err);
+          // rollbar.error('Unknown error while trying to signup', err);
           toast.error(t('errors.unknown'));
           return;
         }
@@ -77,7 +77,7 @@ const SignupPage = () => {
           return;
         }
 
-        rollbar.error('Network error while trying to signup', err);
+        // rollbar.error('Network error while trying to signup', err);
         toast.error(t('errors.network'));
       }
     },
