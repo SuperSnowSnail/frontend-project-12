@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-// import { useRollbar } from '@rollbar/react';
+import { useRollbar } from '@rollbar/react';
 
 import { close } from '../../slices/modalSlice';
 
@@ -11,7 +11,7 @@ import useChat from '../../hooks/useChat';
 
 const Remove = () => {
   const { t } = useTranslation();
-  // const rollbar = useRollbar();
+  const rollbar = useRollbar();
 
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -30,7 +30,7 @@ const Remove = () => {
       toast.success(t('channels.removed'));
       handleClose();
     } catch (err) {
-      // rollbar.error('Error while removing channel', err);
+      rollbar.error('Error while removing channel', err);
       setSubmitting(false);
       console.error(err);
       toast.error(t('errors.network'));
