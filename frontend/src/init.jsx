@@ -1,8 +1,8 @@
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import Rollbar from 'rollbar';
+// import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+// import Rollbar from 'rollbar';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
 
@@ -21,14 +21,14 @@ const init = async () => {
     fallbackLng: 'ru',
   });
 
-  const rollbarConfig = {
+  /* const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
     environment: 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,
-  };
+  }; */
 
-  const rollbar = new Rollbar(rollbarConfig);
+  // const rollbar = new Rollbar(rollbarConfig);
 
   const profanityRu = leoProfanity.getDictionary('ru');
   leoProfanity.add(profanityRu);
@@ -36,19 +36,15 @@ const init = async () => {
   const socket = io('/', { autoConnect: false });
 
   return (
-    <RollbarProvider instance={rollbar}>
-      <ErrorBoundary errorMessage="Error in React render">
-        <I18nextProvider i18n={i18n}>
-          <Provider store={store}>
-            <AuthProvider>
-              <ChatProvider socket={socket}>
-                <App />
-              </ChatProvider>
-            </AuthProvider>
-          </Provider>
-        </I18nextProvider>
-      </ErrorBoundary>
-    </RollbarProvider>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <AuthProvider>
+          <ChatProvider socket={socket}>
+            <App />
+          </ChatProvider>
+        </AuthProvider>
+      </Provider>
+    </I18nextProvider>
   );
 };
 
