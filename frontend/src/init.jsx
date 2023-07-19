@@ -2,7 +2,6 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-// import Rollbar from 'rollbar';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
 
@@ -23,12 +22,10 @@ const init = async () => {
 
   const rollbarConfig = {
     accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
-    environment: 'production',
+    environment: process.env.NODE_ENV === 'production' ? 'production' : 'testenv',
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
-
-  // const rollbar = new Rollbar(rollbarConfig);
 
   const profanityRu = leoProfanity.getDictionary('ru');
   leoProfanity.add(profanityRu);
