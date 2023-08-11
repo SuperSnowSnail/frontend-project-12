@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import axios from 'axios';
 
+import routes from '../routes';
+
 import AuthContext from '../contexts/AuthContext';
 
 const AuthProvider = ({ children }) => {
@@ -14,7 +16,7 @@ const AuthProvider = ({ children }) => {
   const token = user ? user.token : null;
 
   const logIn = async (userData) => {
-    const res = await axios.post('/api/v1/login', userData);
+    const res = await axios.post(routes.loginApi(), userData);
     const newUser = res.data;
     localStorage.setItem('user', JSON.stringify(newUser));
     setUser(newUser);
@@ -26,7 +28,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const signUp = async (userData) => {
-    const res = await axios.post('/api/v1/signup', userData);
+    const res = await axios.post(routes.signupApi(), userData);
     const newUser = res.data;
     localStorage.setItem('user', JSON.stringify(newUser));
     setUser(newUser);

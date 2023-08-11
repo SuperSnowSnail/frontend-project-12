@@ -16,6 +16,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 
+import routes from '../routes';
+
 import useAuth from '../hooks/useAuth';
 
 import loginImg from '../assets/login.jpg';
@@ -46,7 +48,7 @@ const LoginPage = () => {
       setAuthFailed(false);
       try {
         await auth.logIn(values);
-        navigate('/');
+        navigate(routes.chatPage());
       } catch (err) {
         setSubmitting(false);
         console.error(err);
@@ -137,7 +139,7 @@ const LoginPage = () => {
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('login.newToChat')}</span>
-                <Link to="/signup">{t('login.signup')}</Link>
+                <Link to={routes.signupPage()}>{t('login.signup')}</Link>
               </div>
             </Card.Footer>
           </Card>
