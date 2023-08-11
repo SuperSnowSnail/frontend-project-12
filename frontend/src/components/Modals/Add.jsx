@@ -8,12 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import leoProfanity from 'leo-profanity';
 
-import {
-  selectors as channelsSelectors,
-  setCurrentChannelId,
-  addChannel,
-} from '../../slices/channelsSlice';
+import { setCurrentChannelId, addChannel } from '../../slices/channelsSlice';
 import { close } from '../../slices/modalSlice';
+import channelsSelectors from '../../selectors/channelsSelectors';
+import modalSelectors from '../../selectors/modalSelectors';
 
 import useChat from '../../hooks/useChat';
 
@@ -24,9 +22,8 @@ const Add = () => {
   const dispatch = useDispatch();
   const chat = useChat();
 
-  const isOpen = useSelector((state) => state.modal.isOpen);
-  const channels = useSelector(channelsSelectors.selectAll);
-  const channelsNames = channels.map(({ name }) => name);
+  const isOpen = useSelector(modalSelectors.selectIsOpen);
+  const channelsNames = useSelector(channelsSelectors.selectChannelsNames);
 
   const handleClose = () => dispatch(close());
 
@@ -37,8 +34,8 @@ const Add = () => {
       .required(t('modals.required'))
       .min(3, t('modals.min'))
       .max(20, t('modals.max'))
-      .notOneOf(channelsNames, t('modals.uniq'))
-      .notOneOf(leoProfanity.list(), t('modals.profanity')),
+      .notOneOf(leoProfanity.list(), t('modals.profanity'))
+      .notOneOf(channelsNames, t('modals.uniq')),
   });
 
   const formik = useFormik({
