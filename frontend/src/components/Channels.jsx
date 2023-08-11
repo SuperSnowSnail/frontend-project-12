@@ -6,8 +6,8 @@ import { PlusSquare } from 'react-bootstrap-icons';
 
 import ChannelButton from './ChannelButton';
 
-import { selectors as channelsSelectors } from '../slices/channelsSlice';
 import { open } from '../slices/modalSlice';
+import channelsSelectors from '../selectors/channelsSelectors';
 
 const Channels = () => {
   const { t } = useTranslation();

@@ -11,12 +11,13 @@ import { useTranslation } from 'react-i18next';
 
 import { setCurrentChannelId } from '../slices/channelsSlice';
 import { open } from '../slices/modalSlice';
+import channelsSelectors from '../selectors/channelsSelectors';
 
 const Removable = ({ id, name }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const currentId = useSelector((state) => state.channels.currentChannelId);
+  const currentId = useSelector(channelsSelectors.selectCurrentChannelId);
 
   const handleOpenRemove = () => {
     const item = {
@@ -64,7 +65,7 @@ const NonRemovable = ({ id, name }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const currentId = useSelector((state) => state.channels.currentChannelId);
+  const currentId = useSelector(channelsSelectors.selectCurrentChannelId);
 
   return (
     <Button
