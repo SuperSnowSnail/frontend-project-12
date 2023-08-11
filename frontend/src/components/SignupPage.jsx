@@ -19,6 +19,8 @@ import leoProfanity from 'leo-profanity';
 
 import useAuth from '../hooks/useAuth';
 
+import routes from '../routes';
+
 import signupImg from '../assets/signup.jpg';
 
 const SignupPage = () => {
@@ -62,7 +64,7 @@ const SignupPage = () => {
       try {
         const { username, password } = values;
         await auth.signUp({ username, password });
-        navigate('/');
+        navigate(routes.chatPage());
       } catch (err) {
         setSubmitting(false);
         console.error(err);

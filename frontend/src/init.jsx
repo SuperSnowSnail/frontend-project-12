@@ -5,6 +5,8 @@ import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
 
+import routes from './routes';
+
 import App from './components/App';
 import resources from './locales/index.js';
 import store from './slices';
@@ -30,7 +32,7 @@ const init = async () => {
   const profanityRu = leoProfanity.getDictionary('ru');
   leoProfanity.add(profanityRu);
 
-  const socket = io('/', { autoConnect: false });
+  const socket = io(routes.chatPage(), { autoConnect: false });
 
   return (
     <RollbarProvider config={rollbarConfig}>
