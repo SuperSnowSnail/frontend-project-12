@@ -27,7 +27,7 @@ const NavBar = () => {
           <Button
             onClick={() => {
               auth.logOut();
-              navigate('/login');
+              navigate(routes.loginPage());
             }}
           >
             {t('logout')}
