@@ -9,42 +9,44 @@ const AuthProvider = ({ children }) => {
   const localUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(localUser);
 
-  const loggedIn = Boolean(user);
+  const context = useMemo(() => {
+    const loggedIn = Boolean(user);
 
-  const username = user ? user.username : null;
+    const username = user ? user.username : null;
 
-  const token = user ? user.token : null;
+    const token = user ? user.token : null;
 
-  const logIn = async (userData) => {
-    const res = await axios.post(routes.loginApi(), userData);
-    const newUser = res.data;
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
-  };
+    const headers = loggedIn ? { Authorization: `Bearer ${token}` } : {};
 
-  const logOut = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-  };
+    const logIn = async (userData) => {
+      const res = await axios.post(routes.loginApi(), userData);
+      const newUser = res.data;
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setUser(newUser);
+    };
 
-  const signUp = async (userData) => {
-    const res = await axios.post(routes.signupApi(), userData);
-    const newUser = res.data;
-    localStorage.setItem('user', JSON.stringify(newUser));
-    setUser(newUser);
-  };
+    const logOut = () => {
+      localStorage.removeItem('user');
+      setUser(null);
+    };
 
-  const context = useMemo(
-    () => ({
+    const signUp = async (userData) => {
+      const res = await axios.post(routes.signupApi(), userData);
+      const newUser = res.data;
+      localStorage.setItem('user', JSON.stringify(newUser));
+      setUser(newUser);
+    };
+
+    return {
       loggedIn,
       username,
       token,
+      headers,
       logIn,
       logOut,
       signUp,
-    }),
-    [loggedIn, username, token],
-  );
+    };
+  }, [user]);
 
   return <AuthContext.Provider value={context}>{children}</AuthContext.Provider>;
 };

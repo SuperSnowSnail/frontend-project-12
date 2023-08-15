@@ -34,7 +34,7 @@ const ChatPage = () => {
     const fetchContent = async () => {
       try {
         setFetching(true);
-        const headers = auth.loggedIn ? { Authorization: `Bearer ${auth.token}` } : {};
+        const { headers } = auth;
         const { data } = await axios.get(routes.dataApi(), { headers });
 
         dispatch(addChannels(data.channels));
