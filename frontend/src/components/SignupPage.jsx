@@ -11,6 +11,7 @@ import {
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +64,9 @@ const SignupPage = () => {
       setAuthFailed(false);
       try {
         const { username, password } = values;
-        await auth.signUp({ username, password });
+        const res = await axios.post(routes.signupApi(), { username, password });
+        const userData = res.data;
+        auth.signUp(userData);
         navigate(routes.chatPage());
       } catch (err) {
         setSubmitting(false);

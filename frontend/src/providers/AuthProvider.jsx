@@ -1,7 +1,4 @@
 import { useState, useMemo } from 'react';
-import axios from 'axios';
-
-import routes from '../routes';
 
 import AuthContext from '../contexts/AuthContext';
 
@@ -19,10 +16,8 @@ const AuthProvider = ({ children }) => {
     const headers = loggedIn ? { Authorization: `Bearer ${token}` } : {};
 
     const logIn = async (userData) => {
-      const res = await axios.post(routes.loginApi(), userData);
-      const newUser = res.data;
-      localStorage.setItem('user', JSON.stringify(newUser));
-      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
     };
 
     const logOut = () => {
@@ -31,10 +26,8 @@ const AuthProvider = ({ children }) => {
     };
 
     const signUp = async (userData) => {
-      const res = await axios.post(routes.signupApi(), userData);
-      const newUser = res.data;
-      localStorage.setItem('user', JSON.stringify(newUser));
-      setUser(newUser);
+      localStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
     };
 
     return {
